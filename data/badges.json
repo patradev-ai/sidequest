@@ -1,0 +1,204 @@
+{
+  "badges": [
+    {
+      "id": 1,
+      "name": "First Mission",
+      "description": "Complete your first daily mission",
+      "icon": "fa-star",
+      "color": "from-yellow-400 to-orange-500",
+      "rarity": "common",
+      "points": 10
+    },
+    {
+      "id": 2,
+      "name": "Week Warrior",
+      "description": "Complete missions for 7 consecutive days",
+      "icon": "fa-fire",
+      "color": "from-orange-500 to-red-500",
+      "rarity": "uncommon",
+      "points": 50
+    },
+    {
+      "id": 3,
+      "name": "Social Explorer",
+      "description": "Share 5 missions on social media",
+      "icon": "fa-share-alt",
+      "color": "from-blue-400 to-purple-500",
+      "rarity": "common",
+      "points": 25
+    },
+    {
+      "id": 4,
+      "name": "Community Builder",
+      "description": "Invite 10 friends to join Daily Mission",
+      "icon": "fa-users",
+      "color": "from-green-400 to-blue-500",
+      "rarity": "rare",
+      "points": 100
+    },
+    {
+      "id": 5,
+      "name": "Mission Master",
+      "description": "Complete 100 total missions",
+      "icon": "fa-crown",
+      "color": "from-purple-500 to-pink-500",
+      "rarity": "epic",
+      "points": 500
+    },
+    {
+      "id": 6,
+      "name": "Early Bird",
+      "description": "Complete 10 missions before 8 AM",
+      "icon": "fa-sun",
+      "color": "from-yellow-300 to-yellow-500",
+      "rarity": "uncommon",
+      "points": 75
+    },
+    {
+      "id": 7,
+      "name": "Night Owl",
+      "description": "Complete 10 missions after 10 PM",
+      "icon": "fa-moon",
+      "color": "from-indigo-500 to-purple-600",
+      "rarity": "uncommon",
+      "points": 75
+    },
+    {
+      "id": 8,
+      "name": "Creative Genius",
+      "description": "Complete 25 creative missions",
+      "icon": "fa-palette",
+      "color": "from-pink-400 to-red-500",
+      "rarity": "rare",
+      "points": 150
+    },
+    {
+      "id": 9,
+      "name": "Fitness Enthusiast",
+      "description": "Complete 25 fitness missions",
+      "icon": "fa-dumbbell",
+      "color": "from-green-500 to-teal-500",
+      "rarity": "rare",
+      "points": 150
+    },
+    {
+      "id": 10,
+      "name": "Learning Champion",
+      "description": "Complete 25 learning missions",
+      "icon": "fa-graduation-cap",
+      "color": "from-blue-500 to-indigo-600",
+      "rarity": "rare",
+      "points": 150
+    },
+    {
+      "id": 11,
+      "name": "Monthly Hero",
+      "description": "Complete at least one mission every day for a month",
+      "icon": "fa-calendar-check",
+      "color": "from-purple-600 to-blue-600",
+      "rarity": "epic",
+      "points": 300
+    },
+    {
+      "id": 12,
+      "name": "Legend",
+      "description": "Reach the top 10 on the leaderboard",
+      "icon": "fa-trophy",
+      "color": "from-yellow-400 to-yellow-600",
+      "rarity": "legendary",
+      "points": 1000
+    }
+  ],
+  "leaderboard": [
+    {
+      "rank": 1,
+      "username": "MissionMaster2024",
+      "points": 2450,
+      "missions_completed": 98,
+      "streak": 45,
+      "level": 12,
+      "badges": [1, 2, 4, 5, 8, 11, 12]
+    },
+    {
+      "rank": 2,
+      "username": "DailyChampion",
+      "points": 2120,
+      "missions_completed": 85,
+      "streak": 32,
+      "level": 11,
+      "badges": [1, 2, 3, 6, 9, 11]
+    },
+    {
+      "rank": 3,
+      "username": "AdventureSeeker",
+      "points": 1890,
+      "missions_completed": 76,
+      "streak": 28,
+      "level": 10,
+      "badges": [1, 2, 3, 7, 8, 10]
+    },
+    {
+      "rank": 4,
+      "username": "CreativeExplorer",
+      "points": 1675,
+      "missions_completed": 67,
+      "streak": 23,
+      "level": 9,
+      "badges": [1, 2, 5, 8, 10]
+    },
+    {
+      "rank": 5,
+      "username": "FitnessGuru",
+      "points": 1520,
+      "missions_completed": 61,
+      "streak": 19,
+      "level": 8,
+      "badges": [1, 2, 6, 9]
+    },
+    {
+      "rank": 6,
+      "username": "StudyBuddy",
+      "points": 1340,
+      "missions_completed": 54,
+      "streak": 16,
+      "level": 7,
+      "badges": [1, 2, 7, 10]
+    },
+    {
+      "rank": 7,
+      "username": "SocialButterfly",
+      "points": 1180,
+      "missions_completed": 47,
+      "streak": 14,
+      "level": 6,
+      "badges": [1, 3, 4]
+    },
+    {
+      "rank": 8,
+      "username": "MorningPerson",
+      "points": 980,
+      "missions_completed": 39,
+      "streak": 12,
+      "level": 5,
+      "badges": [1, 2, 6]
+    },
+    {
+      "rank": 9,
+      "username": "NightWarrior",
+      "points": 820,
+      "missions_completed": 33,
+      "streak": 9,
+      "level": 4,
+      "badges": [1, 7]
+    },
+    {
+      "rank": 10,
+      "username": "NewbieMaster",
+      "points": 650,
+      "missions_completed": 26,
+      "streak": 7,
+      "level": 3,
+      "badges": [1, 2]
+    }
+  ]
+}

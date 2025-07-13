@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Side Quest Indonesia</title>
+    <meta name="author" content="Sidequestidn, Hanif Bagus Saputra" />
+    <meta
+      name="description"
+      content="Kumpulan orang gabut. Bergabunglah dengan komunitas kami."
+    />
+
+    <link rel="icon" href="/assets/sidequest-logo.png" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="/assets/sidequest-logo.png"
+      type="image/x-icon"
+    />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts - Inter for clean modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Loading Screen Styles -->
+    <style>
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+      }
+
+      .loading-logo {
+        width: 120px;
+        height: auto;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        animation: logoFloat 2s ease-in-out infinite;
+      }
+
+      .loading-logo img {
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+      }
+
+      .loading-text {
+        color: #eea494;
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(251, 60, 60, 0.3);
+        border-top: 3px solid #fb3c3c;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes logoFloat {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+    </style>
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            colors: {
+              "web3-primary": "#fb3c3c",
+              "web3-secondary": "#f49ba4",
+              "web3-accent": "#eea494",
+              "web3-dark": "#2a2a2a",
+              "web3-darker": "#1a1a1a",
+            },
+            animation: {
+              float: "float 6s ease-in-out infinite",
+              "gradient-x": "gradient-x 15s ease infinite",
+              "pulse-glow":
+                "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-theme-primary font-inter text-theme-primary overflow-x-hidden"
+  >
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="loading-logo">
+        <img src="assets/sidequest-logo.png" alt="Sidequest Logo" />
+      </div>
+      <div class="loading-text">Sabar guys...</div>
+      <!-- <div class="loading-spinner"></div> -->
+    </div>
+
+    <!-- Web3 Parallax Background -->
+    <div class="web3-gradient-bg"></div>
+    <div id="web3-parallax" class="web3-parallax-container">
+      <!-- Dynamic orbs, lines, and particles will be generated here -->
+    </div>
+
+    <!-- Opening Sound Trigger -->
+    <audio id="opening-sound" preload="auto">
+      <source
+        src="https://www.soundjay.com/misc/sounds/whoosh-01.wav"
+        type="audio/wav"
+      />
+      <source src="assets/sounds/sidequest.ogg" type="audio/ogg" />
+    </audio>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-white/10 z-50">
+      <div
+        id="progress-bar"
+        class="h-full bg-gradient-to-r from-web3-primary to-web3-accent transition-all duration-300 ease-out"
+        style="width: 0%"
+      ></div>
+    </div>
+
+    <!-- Left Vertical Navigation -->
+    <nav
+      id="unxchr"
+      class="fixed left-4 top-1/2 transform -translate-y-1/2 z-40 space-y-6"
+    >
+      <div class="nav-item group active" data-section="home">
+        <button class="nav-dot flex items-center" aria-label="Home Section">
+          <div
+            class="w-3 h-3 rounded-full bg-web3-primary opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"
+          ></div>
+          <span
+            class="nav-label ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-theme-card backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+          >
+            <i class="fas fa-home mr-2"></i>Beranda
+          </span>
+        </button>
+      </div>
+      <div class="nav-item group" data-section="gallery">
+        <button class="nav-dot flex items-center" aria-label="Gallery Section">
+          <div
+            class="w-3 h-3 rounded-full bg-web3-secondary opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"
+          ></div>
+          <span
+            class="nav-label ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-theme-card backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+          >
+            <i class="fab fa-instagram mr-2"></i>Galeri
+          </span>
+        </button>
+      </div>
+      <div class="nav-item group" data-section="community">
+        <button
+          class="nav-dot flex items-center"
+          aria-label="Community Section"
+        >
+          <div
+            class="w-3 h-3 rounded-full bg-web3-accent opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"
+          ></div>
+          <span
+            class="nav-label ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-theme-card backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+          >
+            <i class="fas fa-users mr-2"></i>Komunitas
+          </span>
+        </button>
+      </div>
+      <div class="nav-item group" data-section="merch">
+        <button class="nav-dot flex items-center" aria-label="Merch Section">
+          <div
+            class="w-3 h-3 rounded-full bg-gradient-to-r from-web3-primary to-web3-secondary opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"
+          ></div>
+          <span
+            class="nav-label ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-theme-card backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+          >
+            <i class="fas fa-shopping-bag mr-2"></i>Produk
+          </span>
+        </button>
+      </div>
+      <div class="nav-item group" data-section="upload">
+        <button class="nav-dot flex items-center" aria-label="Upload Section">
+          <div
+            class="w-3 h-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"
+          ></div>
+          <span
+            class="nav-label ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-theme-card backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+          >
+            <i class="fas fa-upload mr-2"></i>Upload
+          </span>
+        </button>
+      </div>
+      <div class="nav-item group" data-section="leaderboard">
+        <button
+          class="nav-dot flex items-center"
+          aria-label="Leaderboard Section"
+        >
+          <div
+            class="w-3 h-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 opacity-50 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"
+          ></div>
+          <span
+            class="nav-label ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-theme-card backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+          >
+            <i class="fas fa-trophy mr-2"></i>Peringkat
+          </span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Bottom -->
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-theme-card backdrop-blur-sm border-t z-50 md:hidden"
+      style="border-color: var(--border-color)"
+    >
+      <div class="flex justify-around items-center py-3 px-4">
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-300 text-theme-secondary"
+          data-section="home"
+        >
+          <i class="fas fa-home text-lg mb-1"></i>
+          <span class="text-xs">Beranda</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-300 text-theme-secondary"
+          data-section="community"
+        >
+          <i class="fas fa-users text-lg mb-1"></i>
+          <span class="text-xs">Komunitas</span>
+        </button>
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-300 text-theme-secondary"
+          data-section="merch"
+        >
+          <i class="fas fa-shopping-bag text-lg mb-1"></i>
+          <span class="text-xs">Merch</span>
+        </button>
+
+        <button
+          class="mobile-nav-item flex flex-col items-center py-2 px-2 rounded-lg transition-all duration-300 text-theme-secondary"
+          data-section="leaderboard"
+        >
+          <i class="fas fa-trophy text-lg mb-1"></i>
+          <span class="text-xs">Peringkat</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Light/Dark Mode Toggle -->
+    <button
+      id="theme-toggle"
+      class="fixed top-4 right-4 w-12 h-12 z-50 p-3 rounded-full bg-theme-card backdrop-blur-sm border hover:bg-white/20 transition-all duration-300"
+      style="border-color: var(--border-color)"
+    >
+      <i class="fas fa-sun text-theme-primary" id="theme-icon"></i>
+    </button>
+
+    <!-- Section 1: Home / Landing -->
+    <section
+      id="home"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 pb-20 md:pb-0 relative z-10"
+    >
+      <div class="max-w-5xl w-full text-center">
+        <!-- Sidequest Logo -->
+        <div class="text-center">
+          <img
+            src="assets/sidequest-logo.png"
+            alt="Sidequest Logo"
+            class="logo-image"
+          />
+        </div>
+
+        <!-- Main Title -->
+        <!-- <div class="mb-16">
+          <h1
+            class="font-inter text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+          >
+            <span class="text-gradient-web3">Side Quest Indonesia</span>
+          </h1>
+          <p
+            class="font-inter text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto mb-8"
+          >
+            Temukan tantangan bermakna yang mengubah hari biasa menjadi
+            pengalaman luar biasa
+          </p>
+        </div> -->
+
+        <!-- Mission Display -->
+        <div class="web3-card p-4 md:p-12 mb-12 max-w-3xl mx-auto">
+          <div class="flex items-center justify-center mb-4 md:mb-6">
+            <i
+              class="fas fa-target text-xl md:text-3xl text-web3-primary mr-2 md:mr-4"
+            ></i>
+            <h2
+              class="font-inter text-lg md:text-3xl font-semibold text-theme-primary"
+            >
+              Misi Hari Ini
+            </h2>
+          </div>
+
+          <div
+            class="mission-display p-4 md:p-6 mb-6 md:mb-8 rounded-xl bg-theme-card"
+            style="border: 1px solid var(--border-color)"
+          >
+            <p
+              id="daily-mission"
+              class="font-inter text-base md:text-xl text-theme-secondary leading-relaxed"
+            >
+              Memuat...
+            </p>
+          </div>
+
+          <button
+            id="new-mission-btn"
+            class="web3-button group text-sm md:text-base"
+          >
+            <i
+              class="fas fa-sync-alt mr-2 md:mr-3 transition-transform group-hover:rotate-180"
+            ></i>
+            Generate
+          </button>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator opacity-60">
+          <p class="font-inter text-sm text-theme-muted mb-4">
+            Scroll aja kalo lu gabut
+          </p>
+          <div
+            class="w-6 h-10 border-2 rounded-full mx-auto relative"
+            style="border-color: var(--border-color)"
+          >
+            <div
+              class="w-1 h-3 bg-white/60 rounded-full mx-auto mt-2 animate-bounce"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Gallery -->
+    <section
+      id="gallery"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 py-20 pb-32 md:pb-20 relative z-10"
+    >
+      <div class="max-w-7xl w-full">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-inter text-3xl md:text-5xl font-bold mb-6">
+            <span class="text-gradient-web3">Galeri Komunitas</span>
+          </h2>
+          <p class="font-inter text-lg text-theme-secondary max-w-2xl mx-auto">
+            Momen terbaru dan pencapaian dari komunitas yang berfokus pada misi
+          </p>
+        </div>
+
+        <!-- Instagram Posts Grid -->
+        <div
+          id="instagram-grid"
+          class="grid grid-cols-1 lg:grid-cols-3 py-10 gap-1 lg:gap-6 mb-12 overflow-x-auto md:overflow-visible flex md:flex-none"
+        >
+          <!-- Dynamic Instagram posts will be loaded here -->
+        </div>
+
+        <!-- Instagram CTA -->
+        <div class="text-center">
+          <a
+            href="https://www.instagram.com/sidequestidn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="web3-button-secondary group"
+          >
+            <i class="fab fa-instagram mr-3"></i>
+            Ikuti @sidequestidn
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Community -->
+    <section
+      id="community"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 py-20 pb-32 md:pb-20 relative z-10"
+    >
+      <div class="max-w-6xl w-full">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-inter text-3xl md:text-5xl font-bold mb-6">
+            <span class="text-gradient-web3"
+              >Bergabung dengan Komunitas Kami</span
+            >
+          </h2>
+          <p class="font-inter text-lg text-theme-secondary max-w-2xl mx-auto">
+            Terhubung dengan individu yang berpikiran sama dan dukung misi kami
+            untuk membuat setiap hari bermakna
+          </p>
+        </div>
+
+        <!-- Community Links Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Discord Link -->
+          <div
+            class="web3-card p-4 md:p-8 text-center group hover:scale-105 transition-all duration-500"
+          >
+            <div
+              class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:animate-pulse"
+            >
+              <i class="fab fa-discord text-3xl text-white"></i>
+            </div>
+            <h3
+              class="font-inter text-xl font-semibold mb-3 text-theme-primary"
+            >
+              Gabung Discord
+            </h3>
+            <p
+              class="font-inter text-sm text-theme-secondary mb-6 leading-relaxed"
+            >
+              Terhubung dengan komunitas kami untuk diskusi real-time, berbagi
+              misi, dan dukungan
+            </p>
+            <a
+              href="https://discord.gg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="web3-button-small"
+            >
+              <i class="fab fa-discord mr-2"></i>
+              Gabung Server
+            </a>
+          </div>
+
+          <!-- Instagram Link -->
+          <div
+            class="web3-card p-4 md:p-8 text-center group hover:scale-105 transition-all duration-500"
+          >
+            <div
+              class="w-16 md:w-20 h-16 md:h-20 mx-auto mb-4 md:mb-6 bg-gradient-to-br from-pink-500 to-orange-500 rounded-2xl flex items-center justify-center group-hover:animate-pulse"
+            >
+              <i class="fab fa-instagram text-2xl md:text-3xl text-white"></i>
+            </div>
+            <h3
+              class="font-inter text-lg md:text-xl font-semibold mb-2 md:mb-3 text-theme-primary"
+            >
+              Ikuti @sidequestidn
+            </h3>
+            <p
+              class="font-inter text-xs md:text-sm text-theme-secondary mb-4 md:mb-6 leading-relaxed"
+            >
+              Inspirasi harian, sorotan misi, dan konten di balik layar
+            </p>
+            <a
+              href="https://www.instagram.com/sidequestidn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="web3-button-small"
+            >
+              <i class="fab fa-instagram mr-2"></i>
+              Ikuti Sekarang
+            </a>
+          </div>
+
+          <!-- Support Link -->
+          <div
+            class="web3-card p-4 md:p-8 text-center group hover:scale-105 transition-all duration-500"
+          >
+            <div
+              class="w-16 md:w-20 h-16 md:h-20 mx-auto mb-4 md:mb-6 bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center group-hover:animate-pulse"
+            >
+              <i class="fas fa-heart text-2xl md:text-3xl text-white"></i>
+            </div>
+            <h3
+              class="font-inter text-lg md:text-xl font-semibold mb-2 md:mb-3 text-theme-primary"
+            >
+              Dukung Kami
+            </h3>
+            <p
+              class="font-inter text-xs md:text-sm text-theme-secondary mb-4 md:mb-6 leading-relaxed"
+            >
+              Bantu kami menciptakan lebih banyak misi bermakna dan memperluas
+              dampak komunitas
+            </p>
+            <a
+              href="https://saweria.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="web3-button-small"
+            >
+              <i class="fas fa-coffee mr-2"></i>
+              Donasi
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Merch -->
+    <section
+      id="merch"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 py-20 pb-32 md:pb-20 relative z-10"
+    >
+      <div class="max-w-6xl w-full">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-inter text-3xl md:text-5xl font-bold mb-6">
+            <span class="text-gradient-web3">Merchandise Resmi</span>
+          </h2>
+          <p class="font-inter text-lg text-theme-secondary max-w-2xl mx-auto">
+            Tunjukkan semangat misi Anda dengan koleksi eksklusif merchandise
+            premium kami
+          </p>
+        </div>
+
+        <!-- Merch Grid -->
+        <div
+          id="merch-grid"
+          class="flex overflow-x-auto gap-1 md:gap-6 px-4 md:pl-20 py-20"
+        >
+          <!-- T-Shirt -->
+          <div
+            class="merch-card web3-card p-4 md:p-6 text-center group hover:scale-105 transition-all duration-500"
+          >
+            <div
+              class="w-full aspect-square mb-4 md:mb-6 bg-gradient-to-br from-web3-primary to-web3-secondary rounded-xl flex items-center justify-center group-hover:animate-pulse overflow-hidden"
+            >
+              <i class="fas fa-tshirt text-4xl md:text-6xl text-white"></i>
+            </div>
+            <h3
+              class="font-inter text-lg md:text-xl font-semibold mb-2 md:mb-3 text-theme-primary"
+            >
+              Kaos Misi
+            </h3>
+            <p
+              class="font-inter text-xs md:text-sm text-theme-secondary mb-4 md:mb-6 leading-relaxed"
+            >
+              Kaos katun premium dengan desain misi yang memotivasi
+            </p>
+            <div class="mb-4">
+              <span
+                class="font-inter text-lg md:text-xl font-bold text-web3-primary"
+                >Rp 150.000</span
+              >
+            </div>
+            <a
+              href="https://tokopedia.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="web3-button-small w-full"
+            >
+              <i class="fas fa-shopping-cart mr-2"></i>
+              Beli Sekarang
+            </a>
+          </div>
+
+          <!-- Hoodie -->
+          <div
+            class="merch-card web3-card p-4 md:p-6 text-center group hover:scale-105 transition-all duration-500"
+          >
+            <div
+              class="w-full aspect-square mb-4 md:mb-6 bg-gradient-to-br from-web3-secondary to-web3-accent rounded-xl flex items-center justify-center group-hover:animate-pulse overflow-hidden"
+            >
+              <i class="fas fa-hood text-4xl md:text-6xl text-white"></i>
+            </div>
+            <h3
+              class="font-inter text-lg md:text-xl font-semibold mb-2 md:mb-3 text-theme-primary"
+            >
+              Hoodie Misi Harian
+            </h3>
+            <p
+              class="font-inter text-xs md:text-sm text-theme-secondary mb-4 md:mb-6 leading-relaxed"
+            >
+              Hoodie nyaman yang sempurna untuk petualangan harian Anda
+            </p>
+            <div class="mb-4">
+              <span
+                class="font-inter text-lg md:text-xl font-bold text-web3-secondary"
+                >Rp 280.000</span
+              >
+            </div>
+            <a
+              href="https://tokopedia.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="web3-button-small w-full"
+            >
+              <i class="fas fa-shopping-cart mr-2"></i>
+              Beli Sekarang
+            </a>
+          </div>
+
+          <!-- Sticker Pack -->
+          <div
+            class="merch-card web3-card p-4 md:p-6 text-center group hover:scale-105 transition-all duration-500"
+          >
+            <div
+              class="w-full aspect-square mb-4 md:mb-6 bg-gradient-to-br from-web3-accent to-web3-primary rounded-xl flex items-center justify-center group-hover:animate-pulse overflow-hidden"
+            >
+              <i class="fas fa-star text-4xl md:text-6xl text-white"></i>
+            </div>
+            <h3
+              class="font-inter text-lg md:text-xl font-semibold mb-2 md:mb-3 text-theme-primary"
+            >
+              Paket Stiker Misi
+            </h3>
+            <p
+              class="font-inter text-xs md:text-sm text-theme-secondary mb-4 md:mb-6 leading-relaxed"
+            >
+              Stiker tahan air untuk menandai misi yang telah diselesaikan
+            </p>
+            <div class="mb-4">
+              <span
+                class="font-inter text-lg md:text-xl font-bold text-web3-accent"
+                >Rp 25.000</span
+              >
+            </div>
+            <a
+              href="https://tokopedia.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="web3-button-small w-full"
+            >
+              <i class="fas fa-shopping-cart mr-2"></i>
+              Beli Sekarang
+            </a>
+          </div>
+        </div>
+
+        <!-- Merch CTA -->
+        <div class="text-center mt-12">
+          <a
+            href="https://tokopedia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="web3-button-secondary group"
+          >
+            <i class="fas fa-store mr-3"></i>
+            Kunjungi Toko Kami
+            <i
+              class="fas fa-external-link-alt ml-3 text-sm opacity-70 group-hover:opacity-100"
+            ></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Upload Mission -->
+    <section
+      id="upload"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 py-20 pb-32 md:pb-20 relative z-10"
+    >
+      <div class="max-w-6xl w-full">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-inter text-3xl md:text-5xl font-bold mb-6">
+            <span class="text-gradient-web3">Upload Misi Kamu</span>
+          </h2>
+          <p class="font-inter text-lg text-theme-secondary max-w-2xl mx-auto">
+            Bagikan pencapaian misi harianmu dengan komunitas dan dapatkan
+            pengakuan
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Upload Form -->
+          <div class="web3-card p-6 md:p-8">
+            <div class="flex items-center mb-6">
+              <i
+                class="fas fa-upload text-xl md:text-2xl text-web3-primary mr-3"
+              ></i>
+              <h3
+                class="font-inter text-xl md:text-2xl font-bold text-theme-primary"
+              >
+                Submit Misi
+              </h3>
+            </div>
+
+            <form id="mission-upload-form" class="space-y-6">
+              <div>
+                <label
+                  for="instagram-username"
+                  class="block text-sm font-medium text-theme-primary mb-2"
+                >
+                  Username Instagram
+                </label>
+                <input
+                  type="text"
+                  id="instagram-username"
+                  name="instagram-username"
+                  placeholder="@username_kamu"
+                  class="w-full px-4 py-3 rounded-xl border bg-theme-card text-theme-primary placeholder-theme-muted focus:ring-2 focus:ring-web3-primary focus:border-transparent transition-all"
+                  style="border-color: var(--border-color)"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  for="quest-description"
+                  class="block text-sm font-medium text-theme-primary mb-2"
+                >
+                  Deskripsi Quest
+                </label>
+                <textarea
+                  id="quest-description"
+                  name="quest-description"
+                  rows="4"
+                  placeholder="Ceritakan misi yang sudah kamu selesaikan hari ini..."
+                  class="w-full px-4 py-3 rounded-xl border bg-theme-card text-theme-primary placeholder-theme-muted focus:ring-2 focus:ring-web3-primary focus:border-transparent transition-all resize-none"
+                  style="border-color: var(--border-color)"
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="w-full web3-button">
+                <i class="fas fa-paper-plane mr-2"></i>
+                Kirim Misi
+              </button>
+            </form>
+          </div>
+
+          <!-- Information Card -->
+          <div class="web3-card p-6 md:p-8">
+            <div class="flex items-center mb-6">
+              <i
+                class="fas fa-info-circle text-xl md:text-2xl text-web3-secondary mr-3"
+              ></i>
+              <h3
+                class="font-inter text-xl md:text-2xl font-bold text-theme-primary"
+              >
+                Cara Upload Misi
+              </h3>
+            </div>
+
+            <div class="space-y-6">
+              <!-- Langkah 1 -->
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-web3-primary to-web3-secondary rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                >
+                  1
+                </div>
+                <div>
+                  <h4 class="font-semibold text-theme-primary mb-1">
+                    Buat Misi
+                  </h4>
+                  <p class="text-sm text-theme-secondary">
+                    Isi <strong>username Instagram</strong> &
+                    <strong>deskripsi misi menarik</strong> lewat form yang
+                    tersedia.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Langkah 2 -->
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-web3-secondary to-web3-accent rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                >
+                  2
+                </div>
+                <div>
+                  <h4 class="font-semibold text-theme-primary mb-1">
+                    Post di Story
+                  </h4>
+                  <p class="text-sm text-theme-secondary">
+                    Upload foto/video hasil misimu ke
+                    <strong>Instagram Story</strong> lalu
+                    <strong>tag akun kami</strong>
+                    <span class="text-web3-primary font-medium"
+                      >@sidequestidn</span
+                    >.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Langkah 3 -->
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-web3-accent to-web3-primary rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                >
+                  3
+                </div>
+                <div>
+                  <h4 class="font-semibold text-theme-primary mb-1">
+                    Dapatkan Poin
+                  </h4>
+                  <p class="text-sm text-theme-secondary">
+                    Misi yang valid akan ditampilkan di halaman utama & kamu
+                    akan mendapat poin reward.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Info Poin -->
+              <div
+                class="border-t pt-6"
+                style="border-color: var(--border-color)"
+              >
+                <div
+                  class="bg-gradient-to-r from-web3-primary/10 to-web3-secondary/10 rounded-xl p-4"
+                >
+                  <h4
+                    class="font-semibold text-theme-primary mb-2 flex items-center"
+                  >
+                    <i class="fas fa-trophy text-web3-primary mr-2"></i>
+                    Reward Points
+                  </h4>
+                  <ul class="text-sm text-theme-secondary space-y-1">
+                    <li>• Submit misi: +10 poin</li>
+                    <li>• Misi kreatif: +15 poin</li>
+                    <li>• Streak harian: +5 poin bonus</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Leaderboard & Badges -->
+    <section
+      id="leaderboard"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 py-20 pb-32 md:pb-20 relative z-10"
+    >
+      <div class="max-w-7xl w-full">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-inter text-3xl md:text-5xl font-bold mb-6">
+            <span class="text-gradient-web3">Papan Peringkat & Lencana</span>
+          </h2>
+          <p class="font-inter text-lg text-theme-secondary max-w-2xl mx-auto">
+            Bersaing dengan penyuka misi lainnya dan buka lencana pencapaian
+            eksklusif
+          </p>
+        </div>
+
+        <!-- Content Tabs -->
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Leaderboard -->
+          <div class="w-full lg:w-2/3">
+            <div class="web3-card p-4 md:p-6 lg:p-8">
+              <div class="flex items-center mb-6">
+                <i
+                  class="fas fa-trophy text-xl md:text-2xl text-yellow-400 mr-3"
+                ></i>
+                <h3
+                  class="font-inter text-lg md:text-xl lg:text-2xl font-bold text-theme-primary"
+                >
+                  Juara Misi Teratas
+                </h3>
+              </div>
+
+              <!-- Leaderboard List -->
+              <div id="leaderboard-list" class="space-y-3 md:space-y-4">
+                <!-- Will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Badges -->
+          <div class="w-full lg:w-1/3">
+            <div class="web3-card p-4 md:p-6 lg:p-8">
+              <div class="flex items-center mb-6">
+                <i
+                  class="fas fa-award text-xl md:text-2xl text-purple-400 mr-3"
+                ></i>
+                <h3
+                  class="font-inter text-lg md:text-xl lg:text-2xl font-bold text-theme-primary"
+                >
+                  Lencana Pencapaian
+                </h3>
+              </div>
+
+              <!-- Badge Grid -->
+              <div id="badges-grid" class="grid grid-cols-2 gap-3 md:gap-4">
+                <!-- Will be populated by JavaScript -->
+              </div>
+
+              <!-- Badge Legend -->
+              <div
+                class="mt-6 pt-6"
+                style="border-top: 1px solid var(--border-color)"
+              >
+                <h4
+                  class="font-inter text-sm font-semibold text-theme-primary mb-3"
+                >
+                  Tingkat Kelangkaan
+                </h4>
+                <div class="space-y-2 text-xs text-theme-secondary">
+                  <div class="flex items-center">
+                    <div class="w-3 h-3 rounded bg-gray-500 mr-2"></div>
+                    <span>Umum</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-3 h-3 rounded bg-green-500 mr-2"></div>
+                    <span>Tidak Umum</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-3 h-3 rounded bg-blue-500 mr-2"></div>
+                    <span>Langka</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-3 h-3 rounded bg-purple-500 mr-2"></div>
+                    <span>Epik</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-3 h-3 rounded bg-yellow-500 mr-2"></div>
+                    <span>Legendaris</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section 7: About -->
+    <section
+      id="about"
+      class="min-h-screen flex flex-col justify-center items-center px-4 md:pl-20 py-20 pb-32 md:pb-20 relative z-10"
+    >
+      <div class="max-w-5xl w-full">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="font-inter text-3xl md:text-5xl font-bold mb-6">
+            <span class="text-gradient-web3">About</span>
+          </h2>
+          <p class="font-inter text-lg text-theme-secondary max-w-2xl mx-auto">
+            Web ini dibuat untuk menantang kreativitas dan menghadirkan misi
+            unik setiap harinya.
+          </p>
+        </div>
+
+        <!-- About Content -->
+        <div class="web3-card p-6 md:p-10 space-y-6">
+          <!-- Feature 1 -->
+          <div class="flex items-start space-x-4">
+            <div
+              class="w-10 h-10 rounded-full bg-gradient-to-r from-web3-primary to-web3-secondary flex items-center justify-center text-white text-xl flex-shrink-0"
+            >
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-theme-primary text-lg mb-1">
+                Misi Nyeleneh & Out-of-the-Box
+              </h3>
+              <p class="text-theme-secondary text-sm">
+                Dari fotoin sandal sampai tiang misterius, setiap hari selalu
+                ada tantangan baru untuk memicu ide liar kamu.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="flex items-start space-x-4">
+            <div
+              class="w-10 h-10 rounded-full bg-gradient-to-r from-web3-secondary to-web3-accent flex items-center justify-center text-white text-xl flex-shrink-0"
+            >
+              <i class="fa fa-trophy" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-theme-primary text-lg mb-1">
+                Papan Peringkat & Reward
+              </h3>
+              <p class="text-theme-secondary text-sm">
+                Raih poin, buka lencana, dan tampil di leaderboard komunitas
+                gabuters paling aktif.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="flex items-start space-x-4">
+            <div
+              class="w-10 h-10 rounded-full bg-gradient-to-r from-web3-accent to-web3-primary flex items-center justify-center text-white text-xl flex-shrink-0"
+            >
+              <i class="fa fa-comment" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-theme-primary text-lg mb-1">
+                Komunitas Seru & Aktif
+              </h3>
+              <p class="text-theme-secondary text-sm">
+                Di balik misi-misi absurd, ada komunitas kreatif yang siap
+                saling dukung, kasih semangat, dan seru-seruan bareng. <br />
+                Gabung dan jadi bagian dari kekacauan positif ini!
+              </p>
+            </div>
+          </div>
+
+          <!-- Developer Credit -->
+          <div
+            class="mt-12 text-center text-sm text-theme-secondary opacity-70"
+          >
+            Dibuat dengan <i class="fa fa-heart" aria-hidden="true"></i>
+            oleh
+            <span class="text-web3-primary font-semibold"
+              ><a
+                href="https://www.instagram.com/unxchr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Orang Gabut</a
+              ></span
+            >
+            Untuk Orang Gabut Juga •
+            <a
+              href="https://github.com/patradev-ai/sidequest"
+              target="_blank"
+              class="underline hover:text-web3-secondary"
+              >Lihat di GitHub</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- User Detail Modal -->
+    <div
+      id="user-detail-modal"
+      class="fixed inset-0 bg-overlay-bg backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    >
+      <div
+        class="web3-card dark:bg-black/50 max-w-md w-full p-6 md:p-8 relative max-h-[90vh] overflow-y-auto"
+      >
+        <!-- Close Button -->
+        <button
+          id="close-user-modal"
+          class="absolute top-4 right-4 text-theme-muted hover:text-theme-primary transition-colors"
+        >
+          <i class="fas fa-times text-xl"></i>
+        </button>
+
+        <!-- User Info -->
+        <div id="user-modal-content">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>
